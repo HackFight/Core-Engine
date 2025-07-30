@@ -1,0 +1,1 @@
+#include "simple_render_system.hpp"
