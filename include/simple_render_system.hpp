@@ -1,7 +1,7 @@
 #pragma once
 
 #include "game_object.hpp"
-#include "core_pipeline.hpp"
+#include "core_shader.hpp"
 
 //std
 #include <vector>
@@ -21,6 +21,5 @@ public:
 
 private:
 	void CreatePipeline();
-
-	std::unique_ptr<core::CorePipeline> m_corePipeline;
+	std::unique_ptr<core::CoreShader> m_coreShader;
 };

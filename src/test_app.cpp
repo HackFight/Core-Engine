@@ -18,6 +18,7 @@ void TestApp::Run()
 		ProcessInput();
 
 		coreWindow.StartFrame();
+		coreTextureManager.BindTexture(0);
 		simpleRendererSystem.RenderGameObjects(gameObjects);
 		coreWindow.EndFrame();
 
@@ -36,10 +37,10 @@ void TestApp::LoadAssets()
 {
 	std::vector<core::CoreModel::Vertex> quadVertices
 	{
-		{{-0.5f,  0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
-		{{-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
-		{{ 0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
-		{{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}}
+		{{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+		{{ 0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
+		{{ 0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
+		{{-0.5f,  0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}}
 	};
 	uint32_t indices[] =
 	{
@@ -48,9 +49,11 @@ void TestApp::LoadAssets()
 	};
 
 	auto coreModel = std::make_shared<core::CoreModel>(quadVertices, indices, 6);
+	coreTextureManager.CreateTexture(RESOURCES_PATH "textures/Donut.png");
 
 	auto quad = GameObject::createGameObject();
 	quad.model = coreModel;
+	quad.color = {1.0f, 1.0f, 0.0f};
 
 	gameObjects.push_back(std::move(quad));
 }

@@ -25,5 +25,6 @@ private:
     void LoadAssets();
 
     core::CoreWindow coreWindow{ WIDTH, HEIGHT, "OpenGL test app" };
+    core::CoreTextureManager coreTextureManager;
     std::vector<GameObject> gameObjects;
 };

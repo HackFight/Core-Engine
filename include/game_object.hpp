@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core_model.hpp"
+#include "core_texture_manager.hpp"
 
 //libs
 #include <glm/gtc/matrix_transform.hpp>
@@ -42,9 +43,10 @@ public:
 
 	const id_t getID() { return m_id; }
 
-	std::shared_ptr<core::CoreModel> model{};
+	std::shared_ptr<core::CoreModel> model;
 	glm::vec3 color{};
 	Transform2DComponent transfrom2D{};
+	uint32_t texture;
 
 private:
 	GameObject(id_t objID) : m_id{ objID } {}
