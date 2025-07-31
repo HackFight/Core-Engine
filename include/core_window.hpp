@@ -20,20 +20,20 @@ namespace core
 		CoreWindow(const CoreWindow&) = delete;
 		CoreWindow& operator=(const CoreWindow&) = delete;
 
-		GLFWwindow* GetGLFWWindow() { return window; }
-		void SetWindowShouldClose() { glfwSetWindowShouldClose(window, true); }
-		bool ShouldClose() { return glfwWindowShouldClose(window); }
+		GLFWwindow* GetGLFWWindow() { return m_window; }
+		void SetWindowShouldClose() { glfwSetWindowShouldClose(m_window, true); }
+		bool ShouldClose() { return glfwWindowShouldClose(m_window); }
 		void StartFrame();
 		void EndFrame();
 
 	private:
-		void InitGLAD();
 		void InitWindow();
+		void InitGLAD();
 
-		int width, height;
-		bool frameBufferResized;
-		bool frameStarted{ false };
-		const std::string name;
-		GLFWwindow* window;
+		int m_width, m_height;
+		bool m_frameBufferResized;
+		bool m_frameStarted{ false };
+		const std::string m_name;
+		GLFWwindow* m_window;
 	};
 }

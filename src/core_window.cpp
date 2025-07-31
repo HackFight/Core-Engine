@@ -5,40 +5,33 @@
 
 namespace core
 {
-	CoreWindow::CoreWindow(int w, int h, std::string n) : width{ w }, height{ h }, name{ n }
+	CoreWindow::CoreWindow(int w, int h, std::string n) : m_width{ w }, m_height{ h }, m_name{ n }
 	{
 		InitWindow();
 	}
 	CoreWindow::~CoreWindow()
 	{
-		glfwDestroyWindow(window);
+		glfwDestroyWindow(m_window);
 		glfwTerminate();
 	}
 
 	void CoreWindow::StartFrame()
 	{
-		if (frameStarted) { throw std::runtime_error("Can't start a frame while one is already started!"); }
-		frameStarted = true;
+		if (m_frameStarted) { throw std::runtime_error("Can't start a frame while one is already started!"); }
+		m_frameStarted = true;
 
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 	void CoreWindow::EndFrame()
 	{
-		if (!frameStarted) { throw std::runtime_error("Can't end a frame if none is started!"); }
+		if (!m_frameStarted) { throw std::runtime_error("Can't end a frame if none is started!"); }
 
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(m_window);
 
-		frameStarted = false;
+		m_frameStarted = false;
 	}
 
-	void CoreWindow::InitGLAD()
-	{
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		{
-			throw std::runtime_error("Failed to initialize GLAD!");
-		}
-	}
 	void CoreWindow::InitWindow()
 	{
 		glfwInit();
@@ -49,16 +42,23 @@ namespace core
 
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
-		window = glfwCreateWindow(width, height, name.c_str(), NULL, NULL);
-		if (window == NULL)
+		m_window = glfwCreateWindow(m_width, m_height, m_name.c_str(), NULL, NULL);
+		if (m_window == NULL)
 		{
 			throw std::runtime_error("Failed to create GLFW window!");
 		}
 
-		glfwMakeContextCurrent(window);
+		glfwMakeContextCurrent(m_window);
 		InitGLAD();
-		glViewport(0, 0, width, height);
-		glfwSetFramebufferSizeCallback(window, FramebufferResizedCallback);
+		glViewport(0, 0, m_width, m_height);
+		glfwSetFramebufferSizeCallback(m_window, FramebufferResizedCallback);
+	}
+	void CoreWindow::InitGLAD()
+	{
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		{
+			throw std::runtime_error("Failed to initialize GLAD!");
+		}
 	}
 
 

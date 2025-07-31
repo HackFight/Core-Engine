@@ -1,19 +1,26 @@
 #pragma once
 
-namespace renderer
+#include "game_object.hpp"
+#include "core_pipeline.hpp"
+
+//std
+#include <vector>
+#include <memory>
+
+
+class SimpleRenderSystem
 {
-	class SimpleRenderSystem
-	{
-	public:
-		SimpleRenderSystem();
-		~SimpleRenderSystem();
+public:
+	SimpleRenderSystem();
+	~SimpleRenderSystem();
 
-		SimpleRenderSystem(const SimpleRenderSystem&) = delete;
-		SimpleRenderSystem& operator=(const SimpleRenderSystem&) = delete;
+	SimpleRenderSystem(const SimpleRenderSystem&) = delete;
+	SimpleRenderSystem& operator=(const SimpleRenderSystem&) = delete;
 
-		void Render();
-	private:
-		void CreatePipelineLayout();
-		void CreatePipeline();
-	};
-}
+	void RenderGameObjects(std::vector<GameObject>& gameObjects);
+
+private:
+	void CreatePipeline();
+
+	std::unique_ptr<core::CorePipeline> m_corePipeline;
+};

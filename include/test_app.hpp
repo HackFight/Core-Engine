@@ -1,6 +1,11 @@
 #pragma once
 
 #include "core_window.hpp"
+#include "game_object.hpp"
+#include "simple_render_system.hpp"
+
+//std
+#include <memory>
 
 class TestApp
 {
@@ -16,7 +21,9 @@ public:
     void Run();
 
 private:
-    core::CoreWindow coreWindow{ WIDTH, HEIGHT, "OpenGL test app" };
-
     void ProcessInput();
+    void LoadAssets();
+
+    core::CoreWindow coreWindow{ WIDTH, HEIGHT, "OpenGL test app" };
+    std::vector<GameObject> gameObjects;
 };

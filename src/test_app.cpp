@@ -3,18 +3,25 @@
 // std
 #include <iostream>
 
-TestApp::TestApp() {}
+TestApp::TestApp()
+{
+	LoadAssets();
+}
 TestApp::~TestApp() {}
 
 void TestApp::Run()
 {
+	SimpleRenderSystem simpleRendererSystem{};
+
 	while (!coreWindow.ShouldClose())
 	{
-		glfwPollEvents();
 		ProcessInput();
 
 		coreWindow.StartFrame();
+		simpleRendererSystem.RenderGameObjects(gameObjects);
 		coreWindow.EndFrame();
+
+		glfwPollEvents();
 	}
 }
 
@@ -24,4 +31,26 @@ void TestApp::ProcessInput()
 	{
 		coreWindow.SetWindowShouldClose();
 	}
+}
+void TestApp::LoadAssets()
+{
+	std::vector<core::CoreModel::Vertex> quadVertices
+	{
+		{{-0.5f,  0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
+		{{-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
+		{{ 0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
+		{{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}}
+	};
+	uint32_t indices[] =
+	{
+		0, 1, 2,
+		0, 2, 3
+	};
+
+	auto coreModel = std::make_shared<core::CoreModel>(quadVertices, indices, 6);
+
+	auto quad = GameObject::createGameObject();
+	quad.model = coreModel;
+
+	gameObjects.push_back(std::move(quad));
 }
