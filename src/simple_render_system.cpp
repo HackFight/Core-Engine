@@ -7,12 +7,15 @@ SimpleRenderSystem::SimpleRenderSystem()
 }
 SimpleRenderSystem::~SimpleRenderSystem() {}
 
-void SimpleRenderSystem::RenderGameObjects(std::vector<GameObject>& gameObjects)
+void SimpleRenderSystem::RenderGameObjects(core::CoreCamera& camera, std::vector<GameObject>& gameObjects)
 {
 	m_coreShader->Bind();
 	for (auto& obj : gameObjects)
 	{
-		m_coreShader->set3f("uColor", obj.color.r, obj.color.g, obj.color.b);
+		m_coreShader->set3f("Color", obj.color.r, obj.color.g, obj.color.b);
+		m_coreShader->setmat4("ViewMatrix", camera.GetViewMatrix());
+		m_coreShader->setmat4("ModelViewMatrix", camera.GetViewMatrix() * obj.transfrom2D.mat4());
+		m_coreShader->setmat4("ProjectionMatrix", camera.GetProjectionMatrix());
 		obj.model->Bind();
 		obj.model->Draw();
 	}

@@ -17,9 +17,11 @@ void TestApp::Run()
 	{
 		ProcessInput();
 
+		coreCamera.SetDimensions(coreWindow.GetWindowsDimensions().first, coreWindow.GetWindowsDimensions().second);
+
 		coreWindow.StartFrame();
 		coreTextureManager.BindTexture(0);
-		simpleRendererSystem.RenderGameObjects(gameObjects);
+		simpleRendererSystem.RenderGameObjects(coreCamera, gameObjects);
 		coreWindow.EndFrame();
 
 		glfwPollEvents();
@@ -54,6 +56,7 @@ void TestApp::LoadAssets()
 	auto quad = GameObject::createGameObject();
 	quad.model = coreModel;
 	quad.color = {1.0f, 1.0f, 0.0f};
+	quad.transfrom2D.scale = { 2.0f, 2.0f };
 
 	gameObjects.push_back(std::move(quad));
 }

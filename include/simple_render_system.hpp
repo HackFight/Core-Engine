@@ -2,6 +2,7 @@
 
 #include "game_object.hpp"
 #include "core_shader.hpp"
+#include "core_camera.hpp"
 
 //std
 #include <vector>
@@ -17,7 +18,7 @@ public:
 	SimpleRenderSystem(const SimpleRenderSystem&) = delete;
 	SimpleRenderSystem& operator=(const SimpleRenderSystem&) = delete;
 
-	void RenderGameObjects(std::vector<GameObject>& gameObjects);
+	void RenderGameObjects(core::CoreCamera& camera, std::vector<GameObject>& gameObjects);
 
 private:
 	void CreatePipeline();

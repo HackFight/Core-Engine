@@ -31,6 +31,12 @@ namespace core
 
 		m_frameStarted = false;
 	}
+	std::pair<int, int> CoreWindow::GetWindowsDimensions()
+	{
+		int width, height;
+		glfwGetWindowSize(m_window, &width, &height);
+		return { width, height };
+	}
 
 	void CoreWindow::InitWindow()
 	{
@@ -60,7 +66,6 @@ namespace core
 			throw std::runtime_error("Failed to initialize GLAD!");
 		}
 	}
-
 
 	void FramebufferResizedCallback(GLFWwindow* window, int width, int height)
 	{

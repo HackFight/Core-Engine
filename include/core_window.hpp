@@ -21,6 +21,7 @@ namespace core
 		CoreWindow& operator=(const CoreWindow&) = delete;
 
 		GLFWwindow* GetGLFWWindow() { return m_window; }
+		std::pair<int, int> GetWindowsDimensions();
 		void SetWindowShouldClose() { glfwSetWindowShouldClose(m_window, true); }
 		bool ShouldClose() { return glfwWindowShouldClose(m_window); }
 		void StartFrame();
@@ -30,8 +31,8 @@ namespace core
 		void InitWindow();
 		void InitGLAD();
 
-		int m_width, m_height;
 		bool m_frameBufferResized;
+		int m_width, m_height;
 		bool m_frameStarted{ false };
 		const std::string m_name;
 		GLFWwindow* m_window;
