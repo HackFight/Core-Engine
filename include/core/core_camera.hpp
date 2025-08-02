@@ -16,7 +16,8 @@ namespace core
 		CoreCamera& operator=(const CoreCamera&) = delete;
 
 		void SetDimensions(int width, int height);
-		void SetPosition(glm::vec3 position);
+		void SetPosition(glm::vec3 pos);
+		glm::vec3 GetPosition() { return m_position; }
 		glm::mat4 GetViewMatrix() { return m_viewMatrix; }
 		glm::mat4 GetProjectionMatrix() { return m_projectionMatrix; }
 

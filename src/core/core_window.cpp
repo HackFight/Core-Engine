@@ -1,4 +1,4 @@
-#include "core_window.hpp"
+#include "core/core_window.hpp"
 
 //std
 #include <stdexcept>
@@ -20,8 +20,9 @@ namespace core
 		if (m_frameStarted) { throw std::runtime_error("Can't start a frame while one is already started!"); }
 		m_frameStarted = true;
 
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 	void CoreWindow::EndFrame()
 	{

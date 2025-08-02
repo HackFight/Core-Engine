@@ -15,8 +15,8 @@ namespace core
 		struct Vertex
 		{
 			glm::vec3 position;
-			glm::vec3 color;
 			glm::vec2 texCoord;
+			glm::vec3 color;
 		};
 
 		CoreModel(const std::vector<Vertex>& vertices, uint32_t indices[], uint32_t indexCount);

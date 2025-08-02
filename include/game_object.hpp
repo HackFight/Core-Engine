@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core_model.hpp"
-#include "core_texture_manager.hpp"
+#include "core/core_model.hpp"
+#include "core/core_texture_manager.hpp"
 
 //libs
 #include <glm/gtc/matrix_transform.hpp>
