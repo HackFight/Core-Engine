@@ -45,7 +45,7 @@ namespace core
 		GLuint ID;
 		glGenTextures(1, &ID);
 		glBindTexture(GL_TEXTURE_2D, ID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, format, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, param);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, param);
 
@@ -58,7 +58,7 @@ namespace core
 		GLuint ID;
 		glGenTextures(1, &ID);
 		glBindTexture(GL_TEXTURE_2D, ID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, param);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, param);
 
@@ -69,7 +69,7 @@ namespace core
 	void CoreTextureManager::ModifyTexture(CoreTextureManager::TextureInfo info)
 	{
 		glBindTexture(GL_TEXTURE_2D, info.ID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, info.width, info.height, 0, info.format, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, info.width, info.height, 0, info.format, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, info.param);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, info.param);
 	}

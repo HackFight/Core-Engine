@@ -1,8 +1,7 @@
 #pragma once
 
 #include "core/core_window.hpp"
-#include "simple_render_system.hpp"
-#include "pixel-perfect_render_system.hpp"
+#include "pixel_layers_render_system.hpp"
 
 //std
 #include <memory>
@@ -11,7 +10,7 @@ class TestApp
 {
 public:
 
-    static constexpr int WIDTH = 800, HEIGHT = 600;
+    static constexpr int WIDTH = 1920, HEIGHT = 1080;
 
     TestApp();
     ~TestApp();
@@ -30,6 +29,6 @@ private:
     core::CoreTextureManager coreTextureManager;
     core::CoreFramebufferManager coreFramebufferManager{coreTextureManager};
     core::CoreWindow coreWindow{ WIDTH, HEIGHT, "OpenGL test app" };
-    core::CoreCamera coreCamera{ WIDTH, HEIGHT, glm::vec3{0.0f, 0.0f, -5.0f} };
-    std::vector<GameObject> gameObjects;
+    core::CoreCamera coreCamera{ glm::vec2(10.0f, 10.0f * 9.0f/16.0f), glm::vec3{0.0f, 0.0f, -1.0f}};
+    std::vector<Layer> layers;
 };

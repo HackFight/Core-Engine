@@ -11,16 +11,11 @@ TestApp::~TestApp() {}
 
 void TestApp::Run()
 {
-	SimpleRenderSystem simpleRendererSystem{
-		coreTextureManager,
-		coreCamera,
-		winInfo};
-	PixelPerfectRenderSystem pixelPerfectRenderSystem{
+	PixelLayersRenderSystem pixelLayersRenderSystem{
 		coreTextureManager,
 		coreFramebufferManager,
 		coreCamera,
-		winInfo,
-		20};
+		winInfo};
 
 	while (!coreWindow.ShouldClose())
 	{
@@ -28,7 +23,7 @@ void TestApp::Run()
 		ProcessInput();
 
 		coreWindow.StartFrame();
-		pixelPerfectRenderSystem.RenderGameObjects(gameObjects);
+		pixelLayersRenderSystem.RenderLayers(layers);
 		coreWindow.EndFrame();
 
 		glfwPollEvents();
@@ -44,36 +39,32 @@ void TestApp::ProcessInput()
 
 	if (glfwGetKey(coreWindow.GetGLFWWindow(), GLFW_KEY_D) == GLFW_PRESS)
 	{
-		coreCamera.SetPosition(coreCamera.GetPosition() + glm::vec3(0.0001f, 0.0f, 0.0f));
+		coreCamera.SetPosition(coreCamera.GetPosition() - glm::vec3(0.0001f, 0.0f, 0.0f));
 	}
 	if (glfwGetKey(coreWindow.GetGLFWWindow(), GLFW_KEY_A) == GLFW_PRESS)
 	{
-		coreCamera.SetPosition(coreCamera.GetPosition() - glm::vec3(0.0001f, 0.0f, 0.0f));
+		coreCamera.SetPosition(coreCamera.GetPosition() + glm::vec3(0.0001f, 0.0f, 0.0f));
+	}
+	if (glfwGetKey(coreWindow.GetGLFWWindow(), GLFW_KEY_S) == GLFW_PRESS)
+	{
+		coreCamera.SetPosition(coreCamera.GetPosition() - glm::vec3(0.0f, 0.0f, 0.0001f));
+	}
+	if (glfwGetKey(coreWindow.GetGLFWWindow(), GLFW_KEY_W) == GLFW_PRESS)
+	{
+		coreCamera.SetPosition(coreCamera.GetPosition() + glm::vec3(0.0f, 0.0f, 0.0001f));
 	}
 }
 void TestApp::LoadAssets()
 {
-	std::vector<core::CoreModel::Vertex> quadVertices
+	auto layerTexInfo = coreTextureManager.LoadTexture(RESOURCES_PATH "textures/Parallax test.png", GL_NEAREST, GL_RGBA);
+
+	for (size_t i = 0; i < 4; i++)
 	{
-		{{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}},
-		{{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, {0.0f, 1.0f, 0.0f}},
-		{{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}},
-		{{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f}}
-	};
-	uint32_t indices[] =
-	{
-		0, 1, 2,
-		0, 2, 3
-	};
+		auto layer = Layer::createLayer();
+		layer.texture = layerTexInfo.ID;
+		layer.texOffset = glm::vec2(0, 0.75f - i*0.25f);
+		layer.depth = 1.0f - (1.0f/3.0f)*i;
 
-	auto coreModel = std::make_shared<core::CoreModel>(quadVertices, indices, 6);
-	coreTextureManager.LoadTexture(RESOURCES_PATH "textures/Donut.png", GL_NEAREST, GL_RGBA);
-
-	auto quad = GameObject::createGameObject();
-	quad.model = coreModel;
-	quad.color = {1.0f, 1.0f, 0.0f};
-	quad.texture = 0;
-	quad.transfrom2D.scale = { 2.0f, 2.0f };
-
-	gameObjects.push_back(std::move(quad));
+		layers.push_back(std::move(layer));
+	}
 }

@@ -5,17 +5,19 @@
 
 namespace core
 {
-	CoreCamera::CoreCamera(int width, int height, glm::vec3 pos) :
+	CoreCamera::CoreCamera(glm::vec2 sizeInUnits, glm::vec3 pos) :
+		m_sizeInUnits{ sizeInUnits },
 		m_position{ pos }
 	{
 		m_viewMatrix = glm::translate(glm::mat4(1.0f), m_position);
-		m_projectionMatrix = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
+		m_projectionMatrix = glm::ortho(-m_sizeInUnits.x / 2.0f, m_sizeInUnits.x / 2.0f, -m_sizeInUnits.y / 2.0f, m_sizeInUnits.y / 2.0f, 0.0f, 1000.0f);
 	}
 	CoreCamera::~CoreCamera() {}
 
-	void CoreCamera::SetDimensions(int width, int height)
+	void CoreCamera::SetDimensions(glm::vec2 sizeInUnits)
 	{
-		m_projectionMatrix = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
+		m_sizeInUnits = sizeInUnits;
+		m_projectionMatrix = glm::ortho(-m_sizeInUnits.x / 2.0f, m_sizeInUnits.x / 2.0f, -m_sizeInUnits.y / 2.0f, m_sizeInUnits.y / 2.0f, 0.0f, 1000.0f);
 	}
 	void CoreCamera::SetPosition(glm::vec3 pos)
 	{
