@@ -49,6 +49,7 @@ namespace core
 
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
+
 		m_window = glfwCreateWindow(m_width, m_height, m_name.c_str(), NULL, NULL);
 		if (m_window == NULL)
 		{
@@ -56,6 +57,8 @@ namespace core
 		}
 
 		glfwMakeContextCurrent(m_window);
+		glfwSwapInterval(0); //V-sync on/off
+
 		InitGLAD();
 		glViewport(0, 0, m_width, m_height);
 		glfwSetFramebufferSizeCallback(m_window, FramebufferResizedCallback);

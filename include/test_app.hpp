@@ -23,7 +23,7 @@ public:
     WinInfo winInfo = { coreWindow.GetWindowsDimensions().first, coreWindow.GetWindowsDimensions().second };;
 
 private:
-    void ProcessInput();
+    void ProcessInput(double dt);
     void LoadAssets();
 
     core::CoreTextureManager coreTextureManager;

@@ -17,10 +17,18 @@ void TestApp::Run()
 		coreCamera,
 		winInfo};
 
+	double previous_time = glfwGetTime();
+	double current_time = glfwGetTime();
+	double deltaTime = 0;
+
 	while (!coreWindow.ShouldClose())
 	{
+		current_time = glfwGetTime();
+		deltaTime = current_time - previous_time;
+		previous_time = current_time;
+
 		winInfo = { coreWindow.GetWindowsDimensions().first, coreWindow.GetWindowsDimensions().second};
-		ProcessInput();
+		ProcessInput(deltaTime);
 
 		coreWindow.StartFrame();
 		pixelLayersRenderSystem.RenderLayers(layers);
@@ -30,7 +38,7 @@ void TestApp::Run()
 	}
 }
 
-void TestApp::ProcessInput()
+void TestApp::ProcessInput(double dt)
 {
 	if (glfwGetKey(coreWindow.GetGLFWWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
@@ -39,19 +47,11 @@ void TestApp::ProcessInput()
 
 	if (glfwGetKey(coreWindow.GetGLFWWindow(), GLFW_KEY_D) == GLFW_PRESS)
 	{
-		coreCamera.SetPosition(coreCamera.GetPosition() - glm::vec3(0.0001f, 0.0f, 0.0f));
+		coreCamera.SetPosition(coreCamera.GetPosition() - glm::vec3(0.5f * dt, 0.0f, 0.0f));
 	}
 	if (glfwGetKey(coreWindow.GetGLFWWindow(), GLFW_KEY_A) == GLFW_PRESS)
 	{
-		coreCamera.SetPosition(coreCamera.GetPosition() + glm::vec3(0.0001f, 0.0f, 0.0f));
-	}
-	if (glfwGetKey(coreWindow.GetGLFWWindow(), GLFW_KEY_S) == GLFW_PRESS)
-	{
-		coreCamera.SetPosition(coreCamera.GetPosition() - glm::vec3(0.0f, 0.0f, 0.0001f));
-	}
-	if (glfwGetKey(coreWindow.GetGLFWWindow(), GLFW_KEY_W) == GLFW_PRESS)
-	{
-		coreCamera.SetPosition(coreCamera.GetPosition() + glm::vec3(0.0f, 0.0f, 0.0001f));
+		coreCamera.SetPosition(coreCamera.GetPosition() + glm::vec3(0.5f * dt, 0.0f, 0.0f));
 	}
 }
 void TestApp::LoadAssets()

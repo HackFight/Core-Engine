@@ -30,8 +30,9 @@ public:
 	void RenderLayers(std::vector<Layer>& layers);
 
 private:
-	const int BUFFER_WIDTH = 1920, BUFFER_HEIGHT = 1080;
-	const int VIEWPORT_WIDTH = 240, VIEWPORT_HEIGHT = 135;
+	const int LAYERS_WIDTH = 4; //The actual number of layers will be the square of this
+	const int BUFFER_WIDTH = 1924, BUFFER_HEIGHT = 1084;
+	const int VIEWPORT_WIDTH = 481, VIEWPORT_HEIGHT = 271;
 	const float CAMERA_DEPTH = -1.0f;
 
 	void CreatePipeline();

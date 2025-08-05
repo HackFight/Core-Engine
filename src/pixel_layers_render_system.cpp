@@ -43,14 +43,13 @@ void PixelLayersRenderSystem::RenderLayers(std::vector<Layer>& layers)
 		viewMatrix = glm::translate(viewMatrix, glm::vec3(-offset, 0.0f, 0.0f));
 
 		//Align camera to grid
-		float camPosX = camPos.x;
 		float pixelXSize = PixelToWorldScale(1);
-		float p = camPosX / pixelXSize;
+		float p = camPos.x / pixelXSize;
 		p = std::round(p);
 		float newCamX = p * pixelXSize;
-		float camAdjustement = newCamX - camPosX;
+		float camAdjustement = newCamX - camPos.x;
 		
-		cameraAdjustements[i] = camAdjustement;
+		cameraAdjustements[i] = WorldToPixelScale(camAdjustement);
 		viewMatrix = glm::translate(viewMatrix, glm::vec3(camAdjustement, 0.0f, 0.0f));
 
 
@@ -68,9 +67,9 @@ void PixelLayersRenderSystem::RenderLayers(std::vector<Layer>& layers)
 		m_layerModel->Draw();
 
 		i++;
-		if (x < 8) { x++; }
+		if (x < LAYERS_WIDTH) { x++; }
 		else { x = 0; y++; }
-		if (y >= 8) throw std::runtime_error("Not enough space in framebuffer for more layers!");
+		if (y >= LAYERS_WIDTH) throw std::runtime_error("Not enough space in framebuffer for more layers!");
 	}
 	glDisable(GL_SCISSOR_TEST);
 
@@ -85,15 +84,15 @@ void PixelLayersRenderSystem::RenderLayers(std::vector<Layer>& layers)
 	y = 0;
 	for (int j = 0; j < layers.size(); j++)
 	{
-		float horizontalOffset = cameraAdjustements[j] / 5.0f;
+		float horizontalOffset = cameraAdjustements[j] * 2.0f / VIEWPORT_WIDTH;
 		m_compositeShader->setFloat("HorizontalOffset", -horizontalOffset);
-		m_compositeShader->set2f("TexCoordOffset", x * 0.125f, y * 0.125f);
+		m_compositeShader->set2f("TexCoordOffset", x * (1.0f / LAYERS_WIDTH), y * (1.0f / LAYERS_WIDTH));
 		m_quad->Bind();
 		m_quad->Draw();
 
-		if (x < 8) { x++; }
+		if (x < LAYERS_WIDTH) { x++; }
 		else { x = 0; y++; }
-		if (y >= 8) throw std::runtime_error("Not enough space in framebuffer for more layers!");
+		if (y >= LAYERS_WIDTH) throw std::runtime_error("Not enough space in framebuffer for more layers!");
 	}
 }
 
@@ -106,10 +105,10 @@ void PixelLayersRenderSystem::CreateQuad()
 {
 	std::vector<core::CoreModel::Vertex> quadVertices
 	{
-		{{-1.0f, -1.0f, 0.0f}, {0.0f,   0.0f},   {1.0f, 0.0f, 0.0f}},
-		{{ 1.0f, -1.0f, 0.0f}, {0.125f, 0.0f},   {0.0f, 1.0f, 0.0f}},
-		{{ 1.0f,  1.0f, 0.0f}, {0.125f, 0.125f}, {0.0f, 0.0f, 1.0f}},
-		{{-1.0f,  1.0f, 0.0f}, {0.0f,   0.125f}, {1.0f, 1.0f, 1.0f}}
+		{{-2.0f - 0.5f / LAYERS_WIDTH, -2.0f - 0.5f / LAYERS_WIDTH, 0.0f}, {0.0f,                0.0f               }, {1.0f, 0.0f, 0.0f}},
+		{{ 2.0f + 0.5f / LAYERS_WIDTH, -2.0f - 0.5f / LAYERS_WIDTH, 0.0f}, {1.0f / LAYERS_WIDTH, 0.0f               }, {0.0f, 1.0f, 0.0f}},
+		{{ 2.0f + 0.5f / LAYERS_WIDTH,  2.0f + 0.5f / LAYERS_WIDTH, 0.0f}, {1.0f / LAYERS_WIDTH, 1.0f / LAYERS_WIDTH}, {0.0f, 0.0f, 1.0f}},
+		{{-2.0f - 0.5f / LAYERS_WIDTH,  2.0f + 0.5f / LAYERS_WIDTH, 0.0f}, {0.0f,                1.0f / LAYERS_WIDTH}, {1.0f, 1.0f, 1.0f}}
 	};
 	uint32_t indices[] =
 	{
